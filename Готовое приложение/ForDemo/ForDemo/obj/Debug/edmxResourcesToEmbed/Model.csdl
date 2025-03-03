@@ -1,0 +1,256 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Demo_2025Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Accounts">
+    <Key>
+      <PropertyRef Name="Login" />
+    </Key>
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Accounts_Users" FromRole="Accounts" ToRole="Users" />
+    <NavigationProperty Name="Bans" Relationship="Self.FK_Bans_Users" FromRole="Accounts" ToRole="Bans" />
+  </EntityType>
+  <EntityType Name="Bans">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Bans_Users" FromRole="Bans" ToRole="Accounts" />
+  </EntityType>
+  <EntityType Name="ClearingSchedule">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="RoomID" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK_ClearingSchedule_Rooms" FromRole="ClearingSchedule" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="ClientsInfo">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Entry" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Departure" Type="DateTime" Precision="0" />
+    <Property Name="RoomID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK_Clients_Rooms" FromRole="ClientsInfo" ToRole="Rooms" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_ClientsInfo" FromRole="ClientsInfo" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="Roles">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Users" Relationship="Self.FK_Users_Roles" FromRole="Roles" ToRole="Users" />
+  </EntityType>
+  <EntityType Name="RoomCategories">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Category" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK_Rooms_RoomCategories" FromRole="RoomCategories" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="Rooms">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" />
+    <Property Name="Floor" Type="Int32" Nullable="false" />
+    <Property Name="CategoryID" Type="Int32" Nullable="false" />
+    <Property Name="StatusID" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="ClearingSchedule" Relationship="Self.FK_ClearingSchedule_Rooms" FromRole="Rooms" ToRole="ClearingSchedule" />
+    <NavigationProperty Name="ClientsInfo" Relationship="Self.FK_Clients_Rooms" FromRole="Rooms" ToRole="ClientsInfo" />
+    <NavigationProperty Name="RoomCategories" Relationship="Self.FK_Rooms_RoomCategories" FromRole="Rooms" ToRole="RoomCategories" />
+    <NavigationProperty Name="RoomStatuses" Relationship="Self.FK_Rooms_ClearStatuses" FromRole="Rooms" ToRole="RoomStatuses" />
+  </EntityType>
+  <EntityType Name="RoomStatuses">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Status" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Rooms" Relationship="Self.FK_Rooms_ClearStatuses" FromRole="RoomStatuses" ToRole="Rooms" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FIO" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="RoleID" Type="Int32" Nullable="false" />
+    <Property Name="ClientsInfoID" Type="Int32" />
+    <NavigationProperty Name="Accounts" Relationship="Self.FK_Accounts_Users" FromRole="Users" ToRole="Accounts" />
+    <NavigationProperty Name="ClientsInfo" Relationship="Self.FK_Users_ClientsInfo" FromRole="Users" ToRole="ClientsInfo" />
+    <NavigationProperty Name="Roles" Relationship="Self.FK_Users_Roles" FromRole="Users" ToRole="Roles" />
+  </EntityType>
+  <Association Name="FK_Accounts_Users">
+    <End Role="Users" Type="Self.Users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Users">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Accounts">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Bans_Users">
+    <End Role="Accounts" Type="Self.Accounts" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Bans" Type="Self.Bans" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Accounts">
+        <PropertyRef Name="Login" />
+      </Principal>
+      <Dependent Role="Bans">
+        <PropertyRef Name="Login" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ClearingSchedule_Rooms">
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ClearingSchedule" Type="Self.ClearingSchedule" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ClearingSchedule">
+        <PropertyRef Name="RoomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Clients_Rooms">
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="ClientsInfo" Type="Self.ClientsInfo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Rooms">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="ClientsInfo">
+        <PropertyRef Name="RoomID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_ClientsInfo">
+    <End Role="ClientsInfo" Type="Self.ClientsInfo" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClientsInfo">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="ClientsInfoID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Users_Roles">
+    <End Role="Roles" Type="Self.Roles" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Users" Type="Self.Users" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Roles">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Users">
+        <PropertyRef Name="RoleID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rooms_RoomCategories">
+    <End Role="RoomCategories" Type="Self.RoomCategories" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomCategories">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="CategoryID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Rooms_ClearStatuses">
+    <End Role="RoomStatuses" Type="Self.RoomStatuses" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Rooms" Type="Self.Rooms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="RoomStatuses">
+        <PropertyRef Name="ID" />
+      </Principal>
+      <Dependent Role="Rooms">
+        <PropertyRef Name="StatusID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Demo_2025Entities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Accounts" EntityType="Self.Accounts" />
+    <EntitySet Name="Bans" EntityType="Self.Bans" />
+    <EntitySet Name="ClearingSchedule" EntityType="Self.ClearingSchedule" />
+    <EntitySet Name="ClientsInfo" EntityType="Self.ClientsInfo" />
+    <EntitySet Name="Roles" EntityType="Self.Roles" />
+    <EntitySet Name="RoomCategories" EntityType="Self.RoomCategories" />
+    <EntitySet Name="Rooms" EntityType="Self.Rooms" />
+    <EntitySet Name="RoomStatuses" EntityType="Self.RoomStatuses" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_Accounts_Users" Association="Self.FK_Accounts_Users">
+      <End Role="Users" EntitySet="Users" />
+      <End Role="Accounts" EntitySet="Accounts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Bans_Users" Association="Self.FK_Bans_Users">
+      <End Role="Accounts" EntitySet="Accounts" />
+      <End Role="Bans" EntitySet="Bans" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ClearingSchedule_Rooms" Association="Self.FK_ClearingSchedule_Rooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="ClearingSchedule" EntitySet="ClearingSchedule" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Clients_Rooms" Association="Self.FK_Clients_Rooms">
+      <End Role="Rooms" EntitySet="Rooms" />
+      <End Role="ClientsInfo" EntitySet="ClientsInfo" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_ClientsInfo" Association="Self.FK_Users_ClientsInfo">
+      <End Role="ClientsInfo" EntitySet="ClientsInfo" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Users_Roles" Association="Self.FK_Users_Roles">
+      <End Role="Roles" EntitySet="Roles" />
+      <End Role="Users" EntitySet="Users" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rooms_RoomCategories" Association="Self.FK_Rooms_RoomCategories">
+      <End Role="RoomCategories" EntitySet="RoomCategories" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Rooms_ClearStatuses" Association="Self.FK_Rooms_ClearStatuses">
+      <End Role="RoomStatuses" EntitySet="RoomStatuses" />
+      <End Role="Rooms" EntitySet="Rooms" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
